@@ -1,0 +1,7 @@
+### 강아지 입양 (소유주 변경)
+POST localhost:8080/dogs/1/adoptions
+Content-Type: application/json
+
+{
+  "name": "bob"
+}
