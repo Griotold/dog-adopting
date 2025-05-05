@@ -3,5 +3,5 @@ POST localhost:8080/dogs/1/adoptions
 Content-Type: application/json
 
 {
-  "name": "yuju4"
+  "name": "yuju"
 }
