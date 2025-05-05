@@ -1,5 +1,6 @@
 package com.josh.dog_adopting.adoption;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +13,11 @@ import java.util.Map;
 @RestController
 public class DogAdoptionController {
     private final DogRepository repository;
+    private final ApplicationEventPublisher publisher;
 
-    DogAdoptionController(DogRepository repository) {
+    DogAdoptionController(DogRepository repository, ApplicationEventPublisher publisher) {
         this.repository = repository;
+        this.publisher = publisher;
     }
 
     @PostMapping("/dogs/{dogId}/adoptions")
@@ -24,6 +27,7 @@ public class DogAdoptionController {
                 .ifPresent(dog -> {
                     var newDog = new Dog(dogId, dog.name(), dog.description(), owner.get("name"));
                     this.repository.save(newDog);
+                    this.publisher.publishEvent(new DogAdoptionEvent(dogId));
                 });
     }
 }
